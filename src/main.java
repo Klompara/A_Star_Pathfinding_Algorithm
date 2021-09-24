@@ -4,9 +4,11 @@ public class Main {
 		FileHandling file_handling = new FileHandling();
 		Board board = file_handling.getBoard();
 		AStar pathfinding = new AStar(board);
-		
-		Thread logic = new Thread(pathfinding);
-		logic.start();
+		Renderer renderer = new Renderer(board);
+		Thread tLogic = new Thread(pathfinding);
+		Thread tRenderer = new Thread(renderer);
+		tRenderer.start();
+		tLogic.start();
 	}
 
 }

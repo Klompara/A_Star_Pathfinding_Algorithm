@@ -1,5 +1,7 @@
 package Felder;
 
+import java.awt.Graphics2D;
+
 public abstract class Field {
 	private int field_id_ = 0;
 	private static int counter = 0;
@@ -15,8 +17,12 @@ public abstract class Field {
 	private int g_ = 0;
 	private int h_ = 0;
 	private Field[] neighbors = { null, null, null, null };
+	private Field previous;
+	private boolean fastest;
 
 	abstract public boolean isBlocked();
+
+	abstract public void render(Graphics2D g);
 
 	public Field() {
 		counter++;
@@ -80,5 +86,21 @@ public abstract class Field {
 
 	public void setH(int h_) {
 		this.h_ = h_;
+	}
+
+	public Field getPrevious() {
+		return previous;
+	}
+
+	public void setPrevious(Field previous) {
+		this.previous = previous;
+	}
+
+	public boolean isFastest() {
+		return fastest;
+	}
+
+	public void setFastest(boolean isFastest) {
+		this.fastest = isFastest;
 	}
 }

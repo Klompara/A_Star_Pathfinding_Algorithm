@@ -1,16 +1,11 @@
 import java.util.ArrayList;
 
 import Felder.Field;
-import Felder.Item;
 
 public class AStar implements Runnable {
 
 	private Board board;
 	private ArrayList<Field> open_set_ = new ArrayList<Field>();
-
-	public AStar(ArrayList<Field> fields, Item start_, Item goal_, int height_, int width_) {
-		super();
-	}
 
 	public AStar(Board board) {
 		this.board = board;
@@ -59,6 +54,7 @@ public class AStar implements Runnable {
 
 	@Override
 	public void run() {
+		long startTime = System.currentTimeMillis();
 		ArrayList<Field> closed_set_ = new ArrayList<>();
 		board.getStart().setF((int) calculateHeursitic(board.getStart(), board.getGoal()));
 		board.getStart().setG(0);
@@ -78,6 +74,7 @@ public class AStar implements Runnable {
 				Field neighbor = current.getNeighbor(i);
 				if (neighbor != null) {
 					if (neighbor.getFieldId() == board.getGoal().getFieldId()) {
+						reconstructPath(current);
 						finished = true;
 						found = true;
 					}
@@ -93,11 +90,20 @@ public class AStar implements Runnable {
 						}
 						neighbor.setH((int) calculateHeursitic(neighbor, board.getGoal()));
 						neighbor.setF(neighbor.getH() + neighbor.getG());
+						neighbor.setPrevious(current);
 					}
 				}
 			}
 		}
+		long duration = (System.currentTimeMillis() - startTime);
+		System.out.println("PATH " + (found ? "" : "NOT ") + "FOUND AFTER " + duration + "ms");
+	}
 
-		System.out.println("PATH " + (found ? "" : "NOT ") + "FOUND");
+	public void reconstructPath(Field current) {
+		Field temp = current;
+		while (temp.getPrevious() != null) {
+			temp.setFastest(true);
+			temp = temp.getPrevious();
+		}
 	}
 }

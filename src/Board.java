@@ -57,7 +57,7 @@ public class Board {
 		}
 
 		this.start_ = items_.get(0);
-		this.goal_ = items_.get(0);
+		this.goal_ = items_.get(1);
 	}
 
 	public int getHeight() {
