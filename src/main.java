@@ -1,29 +1,12 @@
-import java.util.ArrayList;
-
-import Felder.Field;
-import Felder.Item;
-
-public class main {
+public class Main {
 
 	public static void main(String[] args) {
-		File_handling file_handling = new File_handling();
-		file_handling.readMap();
-		Board board = file_handling.initBoard();
-		board.initBoard();
-		board.printMap();
+		FileHandling file_handling = new FileHandling();
+		Board board = file_handling.getBoard();
+		AStar pathfinding = new AStar(board);
 		
-		ArrayList<Item> items = board.getItems();
-		
-		A_Star pathfinding = new A_Star(board.getFields(), items.get(0), items.get(1), board.getHeight_(), board.getWidth_());
-		
-		if(pathfinding.findPath()) {
-			System.out.println();
-			System.out.println("FOUND PATH");
-		} else {
-			System.out.println();
-			System.out.println("NO PATH");
-		}
-
+		Thread logic = new Thread(pathfinding);
+		logic.start();
 	}
 
 }
